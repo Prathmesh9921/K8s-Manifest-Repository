@@ -1,0 +1,25 @@
+## replection set file -> It does support conditions
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myrs
+  labels:
+    app: myapp
+    key: value
+spec:
+  replicas: 3
+  selector: # adopt pods based on the conditions
+    matchExpressions:
+      - key: env
+        operator: In
+        values: [dev, test]
+  template: # create a new pod 
+    metadata:
+      labels:
+        env: test
+    spec:
+      containers:
+      - name: mycontainer
+        image: nginx
+        ports:
+        - containerPort: 80
